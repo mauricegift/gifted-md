@@ -6,152 +6,153 @@
   "documentation-link": "https://pairing.giftedtech.web.id",
   "owner-verification":"jemmimaonyango@gmail.com",
   "env": {
-    "SESSION_ID": {
+    "SESSION_ID": {Gifted~HFh0SbrT#9jkhqG7b5I3R3I4O_kJd4_2Vdjc6XLyrQ7o-XUU_g84 
       "description": "Put your session-id here. Must Start with 'Gifted~'",
       "required": true,
       "value": ""
     },  
-    "MODE": {
+    "MODE": {private
       "description": "Set Mode  to 'public' to work in all chats only, 'inbox' to work in pm(inbox) chats only or 'private' to work for you only. Default is 'public'. You can set up this later using .mode",
       "required": false,
       "value": "private"
     },
-    "OWNER_NAME": {
+    "OWNER_NAME": {Gifted tech
       "description": "Put Owner Name Here",
       "required": true,
       "value": "Gifted Tech"
     },
-    "OWNER_NUMBER": {
+    "OWNER_NUMBER": {2348119412226
       "description": "Put only one Owner Number Here ie 2547xxxxx",
       "required": true,
-      "value": ""
+      "value": "2348119412226"
     },
-    "ANTI_DELETE": {
+    "ANTI_DELETE": {true
       "description": "Put true to Enable Antidelete for All Chats and Status Updates",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "SUDO_NUMBERS": {
+    "SUDO_NUMBERS": {2348119412226
       "description": "Put Sudo Numbers separated by comma Here ie 2547xxxx,2557xxxxx,928xxxxx. Sudos have same rights as owner(can command the bot)",
       "required": false,
-      "value": ""
+      "value": "2348119412226"
     },
-    "CHAT_BOT": {
+    "CHAT_BOT": {true
       "description": "Put value to 'true' to enablle for all chats or 'inbox' to ebanle in pm(inbox) chats only or 'groups' to enable in groups only else false. You can set up this later using .chatbot",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "AUTO_READ_STATUS": {
+    "AUTO_READ_STATUS": {true
       "description": "Make it 'true' if you want bot to view statuses. You can set up this later using .autoview",
       "required": true,
       "value": "true"
     },
-    "AUTO_LIKE_STATUS": {
+    "AUTO_LIKE_STATUS": {true
       "description": "Make it 'true' if you want bot to read and like statuses. You can set up this later using .autolike",
       "required": false,
       "value": "true"
     },
-    "AUTO_LIKE_EMOJIS": {
+    "AUTO_LIKE_EMOJIS": {💜,💛,❤️,🤍,🖤,💙
       "description": "Input your custom status like emoji(any) else leave blank to use default => 💜",
       "required": false,
       "value": "💜,💛,❤️,🤍,🖤,💙"
     },
-    "AUTO_REPLY_STATUS": {
+    "AUTO_REPLY_STATUS": {true
       "description": "Make it 'true' if you want the bot to send message after viewing status",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "STATUS_REPLY_MSG": {
+    "STATUS_REPLY_MSG": {Status Viewed ✅️
+    },
       "description": "Set your status reply message to be sent after bot views status",
       "required": false,
       "value": "Status Viewed ✅️"
     },
-    "AUTO_READ_MESSAGES": {
+    "AUTO_READ_MESSAGES": {true
       "description": "Enter value to 'true' for blueticking all messages, or 'commands' for blueticking only commands else false. You can set up this later using .autoread",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "PRESENCE": {
+    "PRESENCE": {online
       "description": "Put 'online' for always online, 'typing' for always typing a message, 'recording' for always recording audio or 'null' to maintain your presence. You can set up this later using .presence",
       "required": true,
       "value": "online"
     },
-    "WELCOME": {
+    "WELCOME": {true
       "description": "Put 'true' if you want the bot to automatically welcome participants whenever they join a group",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "GOODBYE": {
+    "GOODBYE": {true
       "description": "Put 'true' if you want the bot to automatically send goodbye message whenever participants leave/exit a group",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "ANTILINK": {
+    "ANTILINK": {true
       "description": "Enter 'true' to delete links and kick the user automatically or 'delete' to delete the links without kicking the user or 'warn' to warn users 3 times before kicking them. You can set up this later using .antilink",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "ANTIBAD": {
+    "ANTIBAD": {true
       "description": "Enter 'true' to automatically delete bad words sent by users in groups. You can set up this later using .antibad",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "BAD_WORDS": {
+    "BAD_WORDS": {fuck,pussy,anus,idiot
       "description": "Enter bad words separated by a comma(will be deleted if ANTIBAD is set to true)",
       "required": false,
       "value": "fuck, pussy, anus, idiot"
     },
-    "AUTO_AUDIO": {
+    "AUTO_AUDIO": {true
       "description": "Put 'true' if you want the bot to automatically send audio in chat if you use  words such as: hi, hello, good morning, good night. You can set up this later using .autoaudio",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "TIME_ZONE": {
+    "TIME_ZONE": {Africa/Nairobi
       "description": "Put your timezone or leave to default if you do not know",
       "required": false,
       "value": "Africa/Nairobi"
     },
-    "AUTO_BLOCK": {
+    "AUTO_BLOCK": {212,77,12
       "description": "Provide country codes you want the bot to automatically block",
       "required": false,
       "value": "212,77,12"
     },
-    "AUTO_REACT": {
+    "AUTO_REACT": {true
       "description": "Put 'true' if you want the bot to auto react to messages. You can set up this later using .autoreact",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "ANTICALL": {
+    "ANTICALL": {true
       "description": "Make it 'true' if you want to automatically reject calls or 'block' to decline calls and block caller. You can set up this later using .anticall",
       "required": false,
-      "value": ""
+      "value": "true"
     },
-    "ANTICALL_MSG": {
-      "description": "Put Your own Anticall Message the bot will send after rejecting calls",
-      "required": false,
+    "ANTICALL_MSG": {true
+      "description":Auto Call Reject Mode Activated by Gifted-Md. 📵 No Calls Allowed!_*
+    
+    "BOT_NAME": {Auto Call Reject Mode Activated by Gifted-Md. 📵 No Calls Allowed!_*
       "value": "*_📞 Auto Call Reject Mode Activated by Gifted-Md. 📵 No Calls Allowed!_*"
-    },
-    "BOT_NAME": {
+    
+    "BOT_NAME": {𝐆𝐈𝐅𝐓𝐄𝐃-𝐌D
       "description": "You can edit this but maintain font style for uniformity. Use 'Fonts Type Keyboard' for styles.",
       "required": false,
       "value": "𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃"
     },
-    "BOT_PIC": {
+    "BOT_PIC": {https://files.giftedtech.web.id/file/gifted-md.jpg
       "description": "You can edit this but it must be a valid image url(link).",
       "required": false,
       "value": "https://files.giftedtech.web.id/file/gifted-md.jpg"
-    },
-    "PACK_AUTHOR": {
+    "PACK_AUTHOR": {𝐆𝐈𝐅𝐓𝐄𝐃 𝐓𝐄𝐂𝐇
       "description": "You can enter your sticker pack author",
       "required": false,
       "value": "𝐆𝐈𝐅𝐓𝐄𝐃 𝐓𝐄𝐂𝐇"
     },
-    "PACK_NAME": {
+    "PACK_NAME": {𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃💜
       "description": "You can enter your sticker pack name.",
       "required": false,
       "value": "𝐆𝐈𝐅𝐓𝐄𝐃-𝐌𝐃💜"
     },
-    "PREFIX": {
+    "PREFIX": { "."
       "description": "Your Bot Prefix (default: .) You can put your own custom prefix",
       "required": true,
       "value": "."
