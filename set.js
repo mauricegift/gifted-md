@@ -15,11 +15,11 @@ global.giftedRepo = "https://github.com/mauricegift/gifted-md";
 global.giftedApiRepo = "https://api.github.com/repos/mauricegift/gifted-md";
 
 module.exports = {
-SESSION_ID: process.env.SESSION_ID || "", // Add sess Id here espwcially when deploying on panels else use app.json and .env file...
+SESSION_ID: process.env.SESSION_ID || "", // Add seGifted~SVpBXbTR#xqa2DxKZaPpdYPbBuoRazoL9erZzZUbyWxtBk_7J1Joss Id here espwcially when deploying on panels else use app.json and .env file...
 SUDO_NUMBERS: process.env.SUDO_NUMBERS || "", //Add multiple Numbers with Country Codes without (+) Separated by Comma...
 ANTI_DELETE: process.env.ANTI_DELETE || false, // make true to use antidelete 
 AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "true",
-AUTO_LIKE_STATUS: process.env.AUTO_LIKE_STATUS || "true",
+AUTO_LIKE_STATUS: process.env.AUTO_LIKE_STATUS || "false",
 AUTO_LIKE_EMOJIS: process.env.AUTO_LIKE_EMOJIS || "💜,💛,❤️,🤍,🖤,💙", //Input Yours Custom...Can be One Emoji or Multiple Emojis
 AUTO_REPLY_STATUS: process.env.AUTO_REPLY_STATUS || "false",
 STATUS_REPLY_MSG: process.env.STATUS_REPLY_MSG || "✅️ Status Viewed by Gifted-Md!", // // Input Yours custom...
