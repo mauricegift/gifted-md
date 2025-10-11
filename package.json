@@ -41,7 +41,7 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^11.1.0",
     "jimp": "0.16.1",
-    "sharp": "^0.34.1",
+    "sharp": "^0.32.6",
     "gifted-dls": "*",
     "mime-types": "^2.1.35",
     "moment-timezone": "^0.5.45",
@@ -55,12 +55,6 @@
     "sqlite3": "*",
     "util": "*",
     "wa-sticker-formatter": "*"
-  },
-  "overrides": {
-    "sharp": "^0.34.1"
-  },
-  "resolutions": {
-    "sharp": "^0.34.1"
   },
   "repository": {
     "type": "git",
