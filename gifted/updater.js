@@ -31,17 +31,21 @@ gmd({
             return reply("✅ Your Gifted-Md Bot is Already on the Latest Version!");
         }
 
-        await reply("🔄 Updating Gifted-Md Bot...");
+        const authorName = commitData.commit.author.name;
+        const authorEmail = commitData.commit.author.email;
+        const commitDate = new Date(commitData.commit.author.date).toLocaleString();
+        const commitMessage = commitData.commit.message;
+
+        await reply(`🔄 Updating Gifted-Md Bot...\n\n*Commit Details:*\n👤 Author: ${authorName} (${authorEmail})\n📅 Date: ${commitDate}\n💬 Message: ${commitMessage}`);
 
         const zipPath = path.join(__dirname, '..', 'gifted-md-main.zip');
         const { data: zipData } = await axios.get("https://github.com/mauricegift/gifted-md/archive/main.zip", { responseType: "arraybuffer" });
         fs.writeFileSync(zipPath, zipData);
 
-       // await reply("Extracting the latest bot code...");
         const extractPath = path.join(__dirname, '..', 'latest');
         const zip = new AdmZip(zipPath);
         zip.extractAllTo(extractPath, true);
-       // await reply("🔄 Replacing files...");
+
         const sourcePath = path.join(extractPath, 'gifted-md-main');
         const destinationPath = path.join(__dirname, '..');
         copyFolderSync(sourcePath, destinationPath);
@@ -52,7 +56,6 @@ gmd({
 
         await reply("✅ Update Complete! Bot is Restarting...");
         
-        // Graceful shutdown and restart
         setTimeout(() => {
             process.exit(0);
         }, 2000);
