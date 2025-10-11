@@ -290,7 +290,7 @@ gmd({
         await reply("File is large, processing might take a while...");
       }
 
-      const convertedBuffer = await formatVideo(response);
+     // const convertedBuffer = await formatVideo(response);
 
       const infoMess = {
         image: { url: firstVideo.thumbnail || botPic },
@@ -332,7 +332,7 @@ gmd({
           switch (messageContent.trim()) {
             case "1":
               await Gifted.sendMessage(from, {
-                video: convertedBuffer,
+                video: response,
                 mimetype: "video/mp4",
                 pvt: true,
                 fileName: `${firstVideo.name}.mp4`.replace(/[^\w\s.-]/gi, ''),
@@ -342,7 +342,7 @@ gmd({
 
             case "2":
               await Gifted.sendMessage(from, {
-                document: convertedBuffer,
+                document: response,
                 mimetype: "video/mp4",
                 fileName: `${firstVideo.name}.mp4`.replace(/[^\w\s.-]/gi, ''),
                 caption: `📄 ${firstVideo.name}`,
