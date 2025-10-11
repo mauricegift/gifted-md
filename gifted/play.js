@@ -53,13 +53,13 @@ gmd({
 
     try {
       const buffer = await gmdBuffer(q);
-      const convertedBuffer = await formatAudio(buffer);
+    //  const convertedBuffer = await formatAudio(buffer);
       if (buffer instanceof Error) {
         await react("❌");
         return reply("Failed to download the audio file.");
       }
       await Gifted.sendMessage(from, {
-        audio: convertedBuffer,
+        audio: buffer,
         mimetype: "audio/mpeg",
         caption: `> *${botFooter}*`,
       }, { quoted: mek });
@@ -90,13 +90,13 @@ gmd({
 
     try {
       const buffer = await gmdBuffer(q);
-      const convertedBuffer = await formatVideo(buffer);
+     // const convertedBuffer = await formatVideo(buffer);
       if (buffer instanceof Error) {
         await react("❌");
         return reply("Failed to download the video file.");
       }
       await Gifted.sendMessage(from, {
-        video: convertedBuffer,
+        video: buffer,
         mimetype: "video/mp4",
         caption: `> *${botFooter}*`,
       }, { quoted: mek });
