@@ -434,7 +434,7 @@ const gmdBuffer = async (url, options = {}) => {
             },
             ...options,
             responseType: 'arraybuffer',
-            timeout: 960000 
+            timeout: 2400000 // 24 mins😂
         });
         
         if (!res.data || res.data.length === 0) {
@@ -458,7 +458,7 @@ const gmdJson = async (url, options = {}) => {
                 'Accept': 'application/json'
             },
             ...options,
-            timeout: 2400000
+            timeout: 2400000 // 24 mins😂
         });
         
         if (!res.data) {
