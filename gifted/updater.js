@@ -6,7 +6,7 @@ const AdmZip = require("adm-zip");
 
 gmd({
     pattern: "update",
-    alias: ["updatenow", "sync"],
+    alias: ["updatenow", "sync", "update now"],
     react: '🆕',
     desc: "Update the bot to the latest version.",
     category: "owner",
