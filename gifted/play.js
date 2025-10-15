@@ -97,6 +97,7 @@ gmd({
       }
       await Gifted.sendMessage(from, {
         document: buffer,
+        fileName: "Video.mp4",
         mimetype: "video/mp4",
         caption: `> *${botFooter}*`,
       }, { quoted: mek });
