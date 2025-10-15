@@ -96,7 +96,7 @@ gmd({
         return reply("Failed to download the video file.");
       }
       await Gifted.sendMessage(from, {
-        video: buffer,
+        document: buffer,
         mimetype: "video/mp4",
         caption: `> *${botFooter}*`,
       }, { quoted: mek });
