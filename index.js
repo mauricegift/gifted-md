@@ -8,7 +8,7 @@ const {
     downloadAndSaveMediaMessage, 
     DisconnectReason, 
     getContentType,
-    fetchLatestBaileysVersion, 
+    fetchLatestWaWebVersion, 
     useMultiFileAuthState, 
     makeCacheableSignalKeyStore,
     jidDecode 
@@ -118,7 +118,7 @@ const RECONNECT_DELAY = 5000;
 
 async function startGifted() {
     try {
-        const { version, isLatest } = await fetchLatestBaileysVersion();
+        const { version, isLatest } = await fetchLatestWaWebVersion();
         const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
         
         if (store) {
