@@ -143,7 +143,7 @@ gmd({
       const videoUrl = firstVideo.url;
 
       // Do not rely on this as I might disable it/change port anytime 
-      const audioApi = `http://102.212.246.26:5434/api/ytmp3?url=${encodeURIComponent(videoUrl)}&stream=true`;
+      const audioApi = `https://ytapi.giftedtech.co.ke/api/ytdla.php?url=${encodeURIComponent(videoUrl)}&stream=true`;
 
       const response = await gmdBuffer(audioApi);
       
@@ -282,7 +282,7 @@ gmd({
       const videoUrl = firstVideo.url;
 
         // Do not rely on this as I might disable it/change port anytime
-      const videoApi = `http://102.212.246.26:5434/api/ytmp4?url=${encodeURIComponent(videoUrl)}&stream=true`;
+      const videoApi = `https://ytapi.giftedtech.co.ke/api/ytdlv.php?url=${encodeURIComponent(videoUrl)}&stream=true`;
 
       const response = await gmdBuffer(videoApi);
 
