@@ -53,13 +53,13 @@ gmd({
 
     try {
       const buffer = await gmdBuffer(q);
-    //  const convertedBuffer = await formatAudio(buffer);
+      const convertedBuffer = await formatAudio(buffer);
       if (buffer instanceof Error) {
         await react("❌");
         return reply("Failed to download the audio file.");
       }
       await Gifted.sendMessage(from, {
-        audio: buffer,
+        audio: convertedBuffer,
         mimetype: "audio/mpeg",
         caption: `> *${botFooter}*`,
       }, { quoted: mek });
@@ -90,13 +90,13 @@ gmd({
 
     try {
       const buffer = await gmdBuffer(q);
-     // const convertedBuffer = await formatVideo(buffer);
+      const convertedBuffer = await formatVideo(buffer);
       if (buffer instanceof Error) {
         await react("❌");
         return reply("Failed to download the video file.");
       }
       await Gifted.sendMessage(from, {
-        document: buffer,
+        document: convertedBuffer,
         fileName: "Video.mp4",
         mimetype: "video/mp4",
         caption: `> *${botFooter}*`,
@@ -152,7 +152,7 @@ gmd({
         await reply("File is large, processing might take a while...");
       }
 
-      // const convertedBuffer = await formatAudio(response);
+       const convertedBuffer = await formatAudio(response);
             const infoMess = {
         image: { url: firstVideo.thumbnail || botPic },
         caption: `> *${botName} 𝐒𝐎𝐍𝐆 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑*
@@ -193,7 +193,7 @@ gmd({
           switch (messageContent.trim()) {
             case "1":
               await Gifted.sendMessage(from, {
-                audio: response,
+                audio: convertedBuffer,
                 mimetype: "audio/mpeg",
                 fileName: `${firstVideo.name}.mp3`.replace(/[^\w\s.-]/gi, ''),
                 caption: `${firstVideo.name}`,
@@ -211,7 +211,7 @@ gmd({
 
             case "2":
               await Gifted.sendMessage(from, {
-                document: response,
+                document: convertedBuffer,
                 mimetype: "audio/mpeg",
                 fileName: `${firstVideo.name}.mp3`.replace(/[^\w\s.-]/gi, ''),
                 caption: `${firstVideo.name}`,
@@ -291,7 +291,7 @@ gmd({
         await reply("File is large, processing might take a while...");
       }
 
-     // const convertedBuffer = await formatVideo(response);
+      const convertedBuffer = await formatVideo(response);
 
       const infoMess = {
         image: { url: firstVideo.thumbnail || botPic },
@@ -333,7 +333,7 @@ gmd({
           switch (messageContent.trim()) {
             case "1":
               await Gifted.sendMessage(from, {
-                video: response,
+                video: convertedBuffer,
                 mimetype: "video/mp4",
                 pvt: true,
                 fileName: `${firstVideo.name}.mp4`.replace(/[^\w\s.-]/gi, ''),
@@ -343,7 +343,7 @@ gmd({
 
             case "2":
               await Gifted.sendMessage(from, {
-                document: response,
+                document: convertedBuffer,
                 mimetype: "video/mp4",
                 fileName: `${firstVideo.name}.mp4`.replace(/[^\w\s.-]/gi, ''),
                 caption: `📄 ${firstVideo.name}`,
