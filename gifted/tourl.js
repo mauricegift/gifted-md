@@ -1,6 +1,8 @@
 const { gmd } = require("../gift");
 const path = require("path");
 const fs = require('fs').promises;
+const { sendButtons } = require('gifted-btns');
+const { downloadContentFromMessage, generateWAMessageFromContent, normalizeMessageContent } = require('gifted-baileys');
 
 gmd({
     pattern: "giftedcdn",
@@ -19,7 +21,6 @@ gmd({
 }, async (from, Gifted, conText) => {
     await handleUpload(from, Gifted, conText, 'githubcdn');
 });
-
 
 gmd({
     pattern: "catbox",
@@ -58,7 +59,7 @@ gmd({
 });
 
 async function handleUpload(from, Gifted, conText, service) {
-    const { mek, reply, react, botFooter, botPrefix, quoted, getMediaBuffer, uploadToGiftedCdn, uploadToGithubCdn, uploadToPixhost, getFileContentType, uploadToImgBB, uploadToPasteboard, uploadToCatbox, pushName } = conText;
+    const { mek, reply, react, botFooter, botPrefix, quoted, getMediaBuffer, uploadToGiftedCdn, uploadToGithubCdn, uploadToPixhost, getFileContentType, uploadToImgBB, uploadToPasteboard, uploadToCatbox, pushName, newsletterUrl } = conText;
 
     if (!quoted) {
         return reply(`⚠️ Please reply to/quote a media message.`);
@@ -168,32 +169,29 @@ async function handleUpload(from, Gifted, conText, service) {
         
         const caption = `Hey *${pushName},*\nHere is Your *${service.toUpperCase()}* Upload Result:\n\n*File Type:* ${fileTypeName}\n*File Size:* ${fileSizeMB.toFixed(2)} MBs\n*File Url:* ${uploadResult.url}\n*File Expiration:* No Expiry\n\n> *${botFooter}*`;
 
-        let messageOptions = { 
-            caption: caption,
-            quoted: mek
-        };
+        // Send buttons
+        await sendButtons(Gifted, from, {
+            title: `${service.toUpperCase()} UPLOAD SUCCESS`,
+            text: caption,
+            footer: `> *${botFooter}*`,
+            buttons: [
+                { 
+                    name: 'cta_copy', 
+                    buttonParamsJson: JSON.stringify({ 
+                        display_text: 'Copy Url', 
+                        copy_code: uploadResult.url 
+                    }) 
+                },
+                {
+                    name: 'cta_url',
+                    buttonParamsJson: JSON.stringify({
+                        display_text: 'Open Link',
+                        url: uploadResult.url
+                    })
+                }
+            ]
+        });
 
-        if (mediaType === 'image' && mimetype !== 'image/webp') {
-            messageOptions.image = buffer;
-            messageOptions.mimetype = mimetype;
-        } else if (mediaType === 'video') {
-            messageOptions.video = buffer;
-            messageOptions.mimetype = mimetype;
-        } else if (mediaType === 'audio') {
-            // Audio will only send caption without media
-            messageOptions.text = caption;
-            delete messageOptions.caption;
-        } else if (mediaType === 'document') {
-            messageOptions.document = buffer;
-            messageOptions.mimetype = mimetype;
-            messageOptions.fileName = fileName;
-        } else if (mediaType === 'sticker' || mimetype === 'image/webp') {
-            // Sticker will only send caption without media
-            messageOptions.text = caption;
-            delete messageOptions.caption;
-        }
-
-        await Gifted.sendMessage(from, messageOptions);
         await react("✅");
         
     } catch (error) {
