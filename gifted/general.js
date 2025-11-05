@@ -31,10 +31,10 @@ await sendButtons(Gifted, from, {
   text: `⚡ Pong: ${responseTime}ms`,    
   footer: `> *${botFooter}*`,            
   buttons: [ 
-    { name: 'cta_copy', 
+    /*{ name: 'cta_copy', 
       buttonParamsJson: JSON.stringify({ 
         display_text: 'Copy Code', 
-        copy_code: '123-123' }) },
+        copy_code: '123-123' }) },*/
     {
       name: 'cta_url',
       buttonParamsJson: JSON.stringify({
