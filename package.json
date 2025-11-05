@@ -23,6 +23,7 @@
   "dependencies": {
     "@vitalets/google-translate-api": "^9.2.0",
     "gifted-baileys": "^2.0.0",
+    "gifted-btns": "^1.0.0",
     "axios": "^1.2.5",
     "acrcloud": "*",
     "adm-zip": "*",
