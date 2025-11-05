@@ -171,7 +171,7 @@ async function handleUpload(from, Gifted, conText, service) {
 
         // Send buttons
         await sendButtons(Gifted, from, {
-            title: `${service.toUpperCase()} UPLOAD SUCCESS`,
+            title: '',
             text: caption,
             footer: `> *${botFooter}*`,
             buttons: [
