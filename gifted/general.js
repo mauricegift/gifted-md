@@ -18,7 +18,7 @@ gmd({
   category: "general",
   description: "Check bot response speed",
 }, async (from, Gifted, conText) => {
-      const { mek, react, newsletterJid, botFooter, botName } = conText;
+      const { mek, react, newsletterJid, newsletterUrl, botFooter, botName } = conText;
     const startTime = process.hrtime();
 
     await new Promise(resolve => setTimeout(resolve, Math.floor(80 + Math.random() * 420)));
@@ -35,7 +35,7 @@ await sendButtons(Gifted, from, {
       name: 'cta_url',
       buttonParamsJson: JSON.stringify({
         display_text: 'WaChannel',
-        url: 'https://api.giftedtech.co.ke'
+        url: newsletterUrl
       })
     }
   ]
