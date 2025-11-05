@@ -156,10 +156,9 @@ gmd({
 
       const convertedBuffer = await formatAudio(response);
 
-      // Generate unique timestamp for this session
       const dateNow = Date.now();
       
-      // Send buttons using your existing function
+      // Send buttons 
       await sendButtons(Gifted, from, {
         title: `${botName} 𝐒𝐎𝐍𝐆 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐄𝐑`,
         text: `⿻ *Title:* ${firstVideo.name}\n⿻ *Duration:* ${firstVideo.duration}\n\n*Select download format:*`,
@@ -191,14 +190,12 @@ gmd({
         
         console.log(`Button clicked: ${selectedButtonId} - ${selectedDisplayText}`);
         
-        // Verify this is from the same chat
         const isFromSameChat = messageData.key?.remoteJid === from;
         if (!isFromSameChat) return;
 
         await react("⬇️");
 
         try {
-          // Check if the button ID matches our current session
           if (!selectedButtonId.includes(`_${dateNow}`)) {
             console.log("Button from different session, ignoring...");
             return;
@@ -245,7 +242,6 @@ gmd({
         }
       };
 
-      // Add one-time listener for this specific session
       Gifted.ev.on("messages.upsert", handleResponse);
 
     } catch (error) {
