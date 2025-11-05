@@ -7,9 +7,55 @@ const { gmd, commands, monospace, formatBytes } = require("../gift"),
       moment = require('moment-timezone'), 
       more = String.fromCharCode(8206), 
       readmore = more.repeat(4001),
-      { downloadContentFromMessage } = require('gifted-baileys'),
+      { downloadContentFromMessage, generateWAMessageFromContent, normalizeMessageContent } = require('gifted-baileys'),
       ram = `${formatBytes(freeMemoryBytes)}/${formatBytes(totalMemoryBytes)}`;
+const { sendButtons } = require('gifted-btns');
 
+
+gmd({ 
+  pattern: "ping",
+  react: "⚡",
+  category: "general",
+  description: "Check bot response speed",
+}, async (from, Gifted, conText) => {
+      const { mek, react, newsletterJid, botFooter, botName } = conText;
+    const startTime = process.hrtime();
+
+    await new Promise(resolve => setTimeout(resolve, Math.floor(80 + Math.random() * 420)));
+    
+    const elapsed = process.hrtime(startTime);
+    const responseTime = Math.floor((elapsed[0] * 1000) + (elapsed[1] / 1000000));
+
+await sendButtons(Gifted, from, {
+  title: 'Gifted-Md Speed',            
+  text: `⚡ Pong: ${responseTime}ms`,    
+  footer: `> *${botFooter}*`,            
+  buttons: [ 
+    {
+      name: 'cta_url',
+      buttonParamsJson: JSON.stringify({
+        display_text: 'WaChannel',
+        url: 'https://api.giftedtech.co.ke'
+      })
+    }
+  ]
+});
+
+    /*await Gifted.sendMessage(from, {
+      text: 
+      contextInfo: {
+        forwardingScore: 5,
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: newsletterJid,
+          newsletterName: botName,
+          serverMessageId: 143
+        }
+      }
+    }, { quoted: mek });*/
+      await react("✅");
+  }
+);
 
 
 gmd({ 
