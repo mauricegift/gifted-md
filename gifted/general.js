@@ -158,7 +158,7 @@ gmd({
   category: "owner",
   description: "Displays the full raw quoted message using Baileys structure.",
 }, async (from, Gifted, conText) => {
-  const { mek, reply, react, quotedMsg, isSuperUser, botName, newsletterJid } = conText;
+  const { mek, reply, react, quotedMsg, isSuperUser, botName, botFooter, newsletterJid } = conText;
   
   if (!isSuperUser) {
     return reply(`Owner Only Command!`);
@@ -175,7 +175,26 @@ gmd({
     for (const chunk of chunks) {
       const formattedMessage = `\`\`\`\n${chunk}\n\`\`\``;
 
-      await Gifted.sendMessage(
+ await sendButtons(Gifted, from, {
+  title: '',            
+  text: formattedMessage,    
+  footer: `> *${botFooter}*`,            
+  buttons: [ 
+    { name: 'cta_copy', 
+      buttonParamsJson: JSON.stringify({ 
+        display_text: 'Copy', 
+        copy_code: formattedMessage }) },
+    {
+      name: 'cta_url',
+      buttonParamsJson: JSON.stringify({
+        display_text: 'WaChannel',
+        url: newsletterUrl
+      })
+    }
+  ]
+});
+
+     /* await Gifted.sendMessage(
         from,
         {
           text: formattedMessage,
@@ -190,7 +209,7 @@ gmd({
           },
         },
         { quoted: mek }
-      );
+      );*/
       await react("✅");
     }
   } catch (error) {
@@ -199,7 +218,7 @@ gmd({
   }
 });
 
-
+/*
 gmd({ 
   pattern: "ping",
   react: "⚡",
@@ -230,7 +249,7 @@ gmd({
   }
 );
 
-
+*/
 
 
 
