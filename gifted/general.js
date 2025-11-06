@@ -321,8 +321,8 @@ await sendButtons(Gifted, from, {
   buttons: [ 
     { name: 'cta_copy', 
       buttonParamsJson: JSON.stringify({ 
-        display_text: 'Copy Url', 
-        copy_code: '123-123' }) },
+        display_text: 'Copy Link', 
+        copy_code: `https://github.com/${giftedRepo}` }) },
     {
       name: 'cta_url',
       buttonParamsJson: JSON.stringify({
