@@ -158,7 +158,7 @@ gmd({
   category: "owner",
   description: "Displays the full raw quoted message using Baileys structure.",
 }, async (from, Gifted, conText) => {
-  const { mek, reply, react, quotedMsg, isSuperUser, botName, botFooter, newsletterJid } = conText;
+  const { mek, reply, react, quotedMsg, isSuperUser, botName, botFooter, newsletterJid, newsletterUrl} = conText;
   
   if (!isSuperUser) {
     return reply(`Owner Only Command!`);
