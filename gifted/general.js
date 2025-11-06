@@ -261,7 +261,7 @@ gmd({
   category: "general",
   description: "check bot uptime status.",
 }, async (from, Gifted, conText) => {
-      const { mek, react, newsletterJid, botName } = conText;
+      const { mek, react, newsletterJid, newsletterUrl, botFooter, botName } = conText;
       
     const uptimeMs = Date.now() - BOT_START_TIME;
     
@@ -270,7 +270,21 @@ gmd({
     const hours = Math.floor((uptimeMs / (1000 * 60 * 60)) % 24);
     const days = Math.floor(uptimeMs / (1000 * 60 * 60 * 24));
 
-    await Gifted.sendMessage(from, {
+ await sendButtons(Gifted, from, {
+  title: '',            
+  text: `⏱️ Uptime: ${days}d ${hours}h ${minutes}m ${seconds}s`,    
+  footer: `> *${botFooter}*`,            
+  buttons: [ 
+    {
+      name: 'cta_url',
+      buttonParamsJson: JSON.stringify({
+        display_text: 'WaChannel',
+        url: newsletterUrl
+      })
+    }
+  ]
+});
+  /*  await Gifted.sendMessage(from, {
       text: `⏱️ Uptime: ${days}d ${hours}h ${minutes}m ${seconds}s`,
       contextInfo: {
         forwardingScore: 5,
@@ -281,7 +295,7 @@ gmd({
           serverMessageId: 143
         }
       }
-    }, { quoted: mek });
+    }, { quoted: mek });*/
       await react("✅");
   }
 );
@@ -293,14 +307,32 @@ gmd({
   category: "general",
   description: "Fetch bot script.",
 }, async (from, Gifted, conText) => {
-      const { mek, sender, react, pushName, botPic, botName, ownerName, newsletterJid, giftedRepo } = conText;
+      const { mek, sender, react, pushName, botPic, botName, botFooter, newsletterUrl, ownerName, newsletterJid, giftedRepo } = conText;
 
     const response = await axios.get(`https://api.github.com/repos/${giftedRepo}`);
     const repoData = response.data;
     const { full_name, name, forks_count, stargazers_count, created_at, updated_at, owner } = repoData;
-    const messageText = `Hello *_${pushName}_,*\nThis is *${botName},* A Whatsapp Bot Built by *${ownerName},* Enhanced with Amazing Features to Make Your Whatsapp Communication and Interaction Experience Amazing\n\n*ʀᴇᴘᴏ ʟɪɴᴋ:* https://github.com/${giftedRepo}\n\n*❲❒❳ ɴᴀᴍᴇ:* ${name}\n*❲❒❳ sᴛᴀʀs:* ${stargazers_count}\n*❲❒❳ ғᴏʀᴋs:* ${forks_count}\n*❲❒❳ ᴄʀᴇᴀᴛᴇᴅ ᴏɴ:* ${new Date(created_at).toLocaleDateString()}\n*❲❒❳ ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇᴅ:* ${new Date(updated_at).toLocaleDateString()}`;
+    const messageText = `Hello *_${pushName}_,*\nThis is *${botName},* A Whatsapp Bot Built by *${ownerName},* Enhanced with Amazing Features to Make Your Whatsapp Communication and Interaction Experience Amazing\n\n*❲❒❳ ɴᴀᴍᴇ:* ${name}\n*❲❒❳ sᴛᴀʀs:* ${stargazers_count}\n*❲❒❳ ғᴏʀᴋs:* ${forks_count}\n*❲❒❳ ᴄʀᴇᴀᴛᴇᴅ ᴏɴ:* ${new Date(created_at).toLocaleDateString()}\n*❲❒❳ ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇᴅ:* ${new Date(updated_at).toLocaleDateString()}`;
 
-    const giftedMess = {
+await sendButtons(Gifted, from, {
+  title: '',            
+  text: messageText,    
+  footer: `> *${botFooter}*`,            
+  buttons: [ 
+    { name: 'cta_copy', 
+      buttonParamsJson: JSON.stringify({ 
+        display_text: 'Copy Url', 
+        copy_code: '123-123' }) },
+    {
+      name: 'cta_url',
+      buttonParamsJson: JSON.stringify({
+        display_text: 'Visit Repo',
+        url: `https://github.com/${giftedRepo}`
+      })
+    }
+  ]
+});
+   /* const giftedMess = {
         image: { url: botPic },
         caption: messageText,
         contextInfo: {
@@ -314,7 +346,7 @@ gmd({
           }
         }
       };
-      await Gifted.sendMessage(from, giftedMess, { quoted: mek });
+      await Gifted.sendMessage(from, giftedMess, { quoted: mek });*/
       await react("✅");
   }
 );
