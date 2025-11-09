@@ -166,7 +166,8 @@ gmd({
         image: firstVideo.thumbnail || botPic,
         buttons: [
           { id: `id1_${firstVideo.id}_${dateNow}`, text: 'Audio 🎶' },
-          { id: `id2_${firstVideo.id}_${dateNow}`, text: 'Audio Document 📄' },
+            { id: `id2_${firstVideo.id}_${dateNow}`, text: 'Voice Message 🔉' },
+          { id: `id3_${firstVideo.id}_${dateNow}`, text: 'Audio Document 📄' },
           {
             name: 'cta_url',
             buttonParamsJson: JSON.stringify({
@@ -188,8 +189,6 @@ gmd({
         const selectedButtonId = templateButtonReply.selectedId;
         const selectedDisplayText = templateButtonReply.selectedDisplayText;
         
-        console.log(`Button clicked: ${selectedButtonId} - ${selectedDisplayText}`);
-        
         const isFromSameChat = messageData.key?.remoteJid === from;
         if (!isFromSameChat) return;
 
@@ -197,7 +196,6 @@ gmd({
 
         try {
           if (!selectedButtonId.includes(`_${dateNow}`)) {
-            console.log("Button from different session, ignoring...");
             return;
           }
           
@@ -206,21 +204,18 @@ gmd({
               await Gifted.sendMessage(from, {
                 audio: convertedBuffer,
                 mimetype: "audio/mpeg",
-                fileName: `${firstVideo.name}.mp3`.replace(/[^\w\s.-]/gi, ''),
-                caption: `${firstVideo.name}`,
-                externalAdReply: {
-                  title: `${firstVideo.name}.mp3`,
-                  body: 'Youtube Downloader',
-                  mediaType: 1,
-                  thumbnailUrl: firstVideo.thumbnail || botPic,
-                  sourceUrl: newsletterUrl,
-                  renderLargerThumbnail: false,
-                  showAdAttribution: true,
-                },
               }, { quoted: messageData });
               break;
 
             case `id2_${firstVideo.id}_${dateNow}`:
+              await Gifted.sendMessage(from, {
+                audio: convertedBuffer,
+                mimetype: "audio/ogg; codecs=opus",
+                ptt: true,
+              }, { quoted: messageData });
+              break;
+
+            case `id3_${firstVideo.id}_${dateNow}`:
               await Gifted.sendMessage(from, {
                 document: convertedBuffer,
                 mimetype: "audio/mpeg",
