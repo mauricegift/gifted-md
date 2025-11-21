@@ -15,13 +15,11 @@ const {
 } = require("gifted-baileys");
 
 const { 
-    evt, 
-    logger,
     emojis,
     gmdStore,
     commands,
-    setSudo,
-    delSudo,
+    evt,logger,
+    setSudo,delSudo,
     GiftedTechApi,
     GiftedApiKey,
     GiftedAutoReact,
@@ -37,8 +35,8 @@ const {
     uploadToImgBB,
     setCommitHash, 
     getCommitHash,
-    gmdBuffer, gmdJson, 
-    formatAudio, formatVideo,
+    gmdBuffer,gmdJson, 
+    formatAudio,formatVideo,
     uploadToGithubCdn,
     uploadToGiftedCdn,
     uploadToPasteboard,
