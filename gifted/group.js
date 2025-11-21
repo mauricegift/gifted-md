@@ -8,35 +8,29 @@ gmd({
   category: "group",
   description: "Open Group Chat.",
 }, async (from, Gifted, conText) => {
-  const { reply, isAdmin, isGroup, isBotAdmin, mek, sender } = conText;
+  const { reply, isAdmin, isSuperAdmin, isGroup, isBotAdmin, mek, sender } = conText;
 
   if (!isGroup) {
-    return Gifted.sendMessage(from, { text: "Groups Only Command only" });
-  }
-
-  if (!isAdmin) {
-    const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} you are not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    });
+    return reply("Groups Only Command only");
   }
 
   if (!isBotAdmin) {
     const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} This bot is not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
+    return reply(`@${userNumber} This bot is not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
+  }
+
+  if (!isAdmin && !isSuperAdmin) {
+    const userNumber = sender.split('@')[0];
+    return reply(`@${userNumber} you are not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
   }
           
-  await Gifted.groupSettingUpdate(from, 'not_announcement');
-  if (!isBotAdmin) {
+  try {
+    await Gifted.groupSettingUpdate(from, 'not_announcement');
     const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} Group successfully unmuted as you wished!`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
+    return reply(`@${userNumber} Group successfully unmuted as you wished!`, { mentions: [`${userNumber}@s.whatsapp.net`] });
+  } catch (error) {
+    console.error("Unmute error:", error);
+    return reply(`❌ Failed to unmute group: ${error.message}`);
   }
 });
 
@@ -48,35 +42,29 @@ gmd({
   category: "group",
   description: "Close Group Chat",
 }, async (from, Gifted, conText) => {
-  const { reply, isAdmin, isGroup, isBotAdmin, mek, sender } = conText;
+  const { reply, isAdmin, isSuperAdmin, isGroup, isBotAdmin, mek, sender } = conText;
 
   if (!isGroup) {
-    return Gifted.sendMessage(from, { text: "Groups Only Command only" });
-  }
-
-  if (!isAdmin) {
-    const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} you are not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    });
+    return reply("Groups Only Command only");
   }
 
   if (!isBotAdmin) {
     const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} This bot is not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
+    return reply(`@${userNumber} This bot is not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
+  }
+
+  if (!isAdmin && !isSuperAdmin) {
+    const userNumber = sender.split('@')[0];
+    return reply(`@${userNumber} you are not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
   }
           
-  await Gifted.groupSettingUpdate(from, 'announcement');
-  if (!isBotAdmin) {
+  try {
+    await Gifted.groupSettingUpdate(from, 'announcement');
     const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} Group successfully muted as you wished!`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
+    return reply(`@${userNumber} Group successfully muted as you wished!`, { mentions: [`${userNumber}@s.whatsapp.net`] });
+  } catch (error) {
+    console.error("Mute error:", error);
+    return reply(`❌ Failed to mute group: ${error.message}`);
   }
 });
 
@@ -103,7 +91,7 @@ gmd({
     const members = [];
     
     gInfo.participants.forEach(p => {
-      const formattedJid = formatJid(p.jid || p.pn);
+      const formattedJid = formatJid(p.phoneNumber || p.pn || p.jid);
       if (p.admin === 'superadmin') {
         superAdmins.push(`• ${formattedJid} - 👑 Super Admin`);
       } else if (p.admin === 'admin') {
@@ -123,13 +111,13 @@ gmd({
 
 🔹 *ID:* ${gInfo.id}
 🔹 *Subject:* ${gInfo.subject || 'None'}
-🔹 *Subject Owner:* ${formatJid(gInfo.subjectOwnerJid)}
+🔹 *Subject Owner:* ${formatJid(gInfo.subjectOwnerPn || gInfo.subjectOwnerJid)}
 🔹 *Subject Changed:* ${new Date(gInfo.subjectTime * 1000).toLocaleString()}
-🔹 *Owner:* ${formatJid(gInfo.ownerJid)}
+🔹 *Owner:* ${formatJid(gInfo.ownerPn || gInfo.ownerJid)}
 🔹 *Creation Date:* ${new Date(gInfo.creation * 1000).toLocaleString()}
 🔹 *Size:* ${gInfo.size} participants
 🔹 *Description:* ${gInfo.desc || 'None'}
-🔹 *Description Owner:* ${formatJid(gInfo.descOwnerJid)}
+🔹 *Description Owner:* ${formatJid(gInfo.descOwnerPn || gInfo.descOwnerJid)}
 🔹 *Description Changed:* ${new Date(gInfo.descTime * 1000).toLocaleString()}
 
 👑 *ADMINS (${superAdmins.length + admins.length})*
@@ -173,60 +161,53 @@ gmd({
   category: "owner",
   description: "Demote a user from being an admin.",
 }, async (from, Gifted, conText) => {
-  const { reply, react, sender, quotedUser, superUser, isSuperAdmin, isAdmin, isGroup, isBotAdmin, mek } = conText;
+  const { reply, react, sender, quotedUser, superUser, isSuperAdmin, isAdmin, isGroup, isBotAdmin, mek, groupAdmins } = conText;
 
   if (!isGroup) {
     return reply("This command only works in groups!");
   }
-
-  if (!isAdmin) {
-    const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} you are not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
-  }
-
-  if (!isBotAdmin) {
-    const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} This bot is not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
-  }
-
+    
   if (!quotedUser) {
     await react("❌");
     return reply(`Please reply to/quote a user or their message!`);
   }
- let result;
+    
+  if (!isBotAdmin) {
+    const userNumber = sender.split('@')[0];
+    return reply(`@${userNumber} This bot is not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
+  }
+
+  if (!isAdmin && !isSuperAdmin) {
+    const userNumber = sender.split('@')[0];
+    return reply(`@${userNumber} you are not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
+  }
+
+  let result;
   if (quotedUser) {
-      if (quotedUser.startsWith('@') && quotedUser.includes('@lid')) {
-        result = quotedUser.replace('@', '') + '@lid';
-      } else {
-        result = quotedUser;
-      }
+    if (quotedUser.startsWith('@') && quotedUser.includes('@lid')) {
+      result = quotedUser.replace('@', '') + '@lid';
+    } else {
+      result = quotedUser;
     }
+  }
 
-    let finalResult = result;
-    if (result && result.includes('@lid')) {
-      finalResult = await Gifted.getJidFromLid(result);
-    }
+  let finalResult = result;
+  if (result && result.includes('@lid')) {
+    finalResult = await Gifted.getJidFromLid(result);
+  }
 
-  if (superUser.includes(finalResult)) {
+  const standardizedFinalResult = finalResult.toLowerCase();
+  const standardizedSuperUsers = superUser.map(user => user.toLowerCase());
+
+  if (standardizedSuperUsers.includes(standardizedFinalResult)) {
     await react("❌");
     return reply("I cannot demote my creator!");
   }
 
-
-  if (!finalResult.includes(isAdmin)) {
+  const standardizedGroupAdmins = groupAdmins.map(admin => admin.toLowerCase());
+  if (!standardizedGroupAdmins.includes(standardizedFinalResult)) {
     const userNumber = finalResult.split('@')[0];
-    return reply(`@${userNumber} is already not an admin`);
-  }
-
-  if (finalResult.includes(isSuperAdmin)) {
-    await react("❌");
-    return reply("I cannot demote the group creator!");
+    return reply(`@${userNumber} is already not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
   }
 
   try {
@@ -249,53 +230,49 @@ gmd({
   category: "owner",
   description: "Promote a user to admin.",
 }, async (from, Gifted, conText) => {
-  const { reply, react, sender, quotedUser, superUser, isSuperAdmin, isAdmin, isGroup, isBotAdmin, mek } = conText;
+  const { reply, react, sender, quotedUser, superUser, isSuperAdmin, isAdmin, isGroup, isBotAdmin, mek, groupAdmins, groupSuperAdmins } = conText;
 
   if (!isGroup) {
     return reply("This command only works in groups!");
   }
-
-  if (!isAdmin) {
-    const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} you are not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
+    
+  if (!quotedUser) {
+    await react("❌");
+    return reply(`Please reply to/quote a user or their message!`);
   }
-
+    
   if (!isBotAdmin) {
     const userNumber = sender.split('@')[0];
-    return Gifted.sendMessage(from, { 
-      text: `@${userNumber} This bot is not an admin`, 
-      mentions: [`${userNumber}@s.whatsapp.net`]
-    }, { quoted: mek });
+    return reply(`@${userNumber} This bot is not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
   }
 
-  if (!quotedUser) {
-    return reply("Please reply to/quote a user to promote");
+  if (!isAdmin && !isSuperAdmin) {
+    const userNumber = sender.split('@')[0];
+    return reply(`@${userNumber} you are not an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
   }
+
   let result;
   if (quotedUser) {
-      if (quotedUser.startsWith('@') && quotedUser.includes('@lid')) {
-        result = quotedUser.replace('@', '') + '@lid';
-      } else {
-        result = quotedUser;
-      }
+    if (quotedUser.startsWith('@') && quotedUser.includes('@lid')) {
+      result = quotedUser.replace('@', '') + '@lid';
+    } else {
+      result = quotedUser;
     }
-
-    let finalResult = result;
-    if (result && result.includes('@lid')) {
-      finalResult = await Gifted.getJidFromLid(result);
-    }
-
-  if (finalResult.includes(isAdmin)) {
-    const userNumber = finalResult.split('@')[0];
-    return reply(`@${userNumber} is already an admin`);
   }
 
-  if (finalResult.includes(isSuperAdmin)) {
+  let finalResult = result;
+  if (result && result.includes('@lid')) {
+    finalResult = await Gifted.getJidFromLid(result);
+  }
+
+  const standardizedFinalResult = finalResult.toLowerCase();
+  const standardizedGroupAdmins = groupAdmins.map(admin => admin.toLowerCase());
+  const standardizedGroupSuperAdmins = groupSuperAdmins.map(admin => admin.toLowerCase());
+  const allAdmins = [...standardizedGroupAdmins, ...standardizedGroupSuperAdmins];
+
+  if (allAdmins.includes(standardizedFinalResult)) {
     const userNumber = finalResult.split('@')[0];
-    return reply(`@${userNumber} is already an admin`);
+    return reply(`@${userNumber} is already an admin`, { mentions: [`${userNumber}@s.whatsapp.net`] });
   }
 
   try {
