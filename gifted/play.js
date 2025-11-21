@@ -143,9 +143,8 @@ gmd({
 
       const firstVideo = searchResponse.videos[0];
       const videoUrl = firstVideo.url;
-
-      // Do not rely on this as I might disable it/change port anytime 
-      const audioApi = `http://157.173.124.27:5657/api/ytdla.php?url=${encodeURIComponent(videoUrl)}&stream=true`;
+ 
+      const audioApi = `${GiftedTechApi}/api/download/ytmp3?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
 
       const response = await gmdBuffer(audioApi);
       
@@ -166,8 +165,7 @@ gmd({
         image: firstVideo.thumbnail || botPic,
         buttons: [
           { id: `id1_${firstVideo.id}_${dateNow}`, text: 'Audio 🎶' },
-            { id: `id2_${firstVideo.id}_${dateNow}`, text: 'Voice Message 🔉' },
-          { id: `id3_${firstVideo.id}_${dateNow}`, text: 'Audio Document 📄' },
+          { id: `id2_${firstVideo.id}_${dateNow}`, text: 'Audio Document 📄' },
           {
             name: 'cta_url',
             buttonParamsJson: JSON.stringify({
@@ -208,14 +206,6 @@ gmd({
               break;
 
             case `id2_${firstVideo.id}_${dateNow}`:
-              await Gifted.sendMessage(from, {
-                audio: convertedBuffer,
-                mimetype: "audio/ogg; codecs=opus",
-                ptt: true,
-              }, { quoted: messageData });
-              break;
-
-            case `id3_${firstVideo.id}_${dateNow}`:
               await Gifted.sendMessage(from, {
                 document: convertedBuffer,
                 mimetype: "audio/mpeg",
@@ -280,7 +270,7 @@ gmd({
       const videoUrl = firstVideo.url;
 
       // Do not rely on this as I might disable it/change port anytime 
-      const audioApi = `http://157.173.124.27:5657/api/ytdla.php?url=${encodeURIComponent(videoUrl)}&stream=true`;
+      const audioApi = `${GiftedTechApi}/api/download/ytmp3?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
 
       const response = await gmdBuffer(audioApi);
       
@@ -418,8 +408,7 @@ gmd({
       const firstVideo = searchResponse.videos[0];
       const videoUrl = firstVideo.url;
 
-        // Do not rely on this as I might disable it/change port anytime
-      const videoApi = `https://ytapi.giftedtech.co.ke/api/ytdlv.php?url=${encodeURIComponent(videoUrl)}&stream=true`;
+      const videoApi = `${GiftedTechApi}/api/download/ytmp4?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
 
       const response = await gmdBuffer(videoApi);
 
