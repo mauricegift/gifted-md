@@ -109,7 +109,7 @@ app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
 
 const sessionDir = path.join(__dirname, "gift", "session");
 
-// loadSession();
+loadSession();
 
 let store; 
 let reconnectAttempts = 0;
@@ -404,11 +404,10 @@ let isBotAdmin = false;
 let isAdmin = false;
 let isSuperAdmin = false;
 
+// START OF FLEXIBLE GROUP METADATA BOTH BAILEYS AND GIFTED-BAILEYS VERSIONS //////////////////////////////////////////////
 if (groupInfo && groupInfo.participants) {
-    // Flexible participant field detection for both Baileys versions
     participants = groupInfo.participants.map(p => p.phoneNumber || p.pn || p.jid || p.id);
     
-    // Flexible admin detection for both Baileys versions
     groupAdmins = groupInfo.participants
         .filter(p => p.admin === 'admin')
         .map(p => p.phoneNumber || p.pn || p.jid || p.id);
@@ -419,7 +418,6 @@ if (groupInfo && groupInfo.participants) {
     
     const senderLid = standardizeJid(sendr);
     
-    // Flexible participant lookup for both Baileys versions
     const founds = groupInfo.participants.find(p => 
         p.id === senderLid || 
         p.pn === senderLid || 
@@ -429,16 +427,15 @@ if (groupInfo && groupInfo.participants) {
     
     sender = founds?.phoneNumber || founds?.pn || founds?.jid || founds?.id || sendr;
     
-    // Check bot admin status
     const botStandardized = standardizeJid(botId);
     isBotAdmin = groupAdmins.includes(botStandardized) || groupSuperAdmins.includes(botStandardized);
     
-    // Check sender admin status
     const senderStandardized = standardizeJid(sender);
     isAdmin = groupAdmins.includes(senderStandardized);
     isSuperAdmin = groupSuperAdmins.includes(senderStandardized);
 }
-
+// END OF FLEXIBLE GROUP METADATA BOTH BAILEYS AND GIFTED-BAILEYS VERSIONS //////////////////////////////////////////////
+            
             const repliedMessage = ms.message?.extendedTextMessage?.contextInfo?.quotedMessage || null;
             const type = getContentType(ms.message);
             const pushName = ms.pushName || 'Gifted-Md User';
