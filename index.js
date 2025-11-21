@@ -109,7 +109,7 @@ app.listen(PORT, () => console.log(`Server Running on Port: ${PORT}`));
 
 const sessionDir = path.join(__dirname, "gift", "session");
 
-loadSession();
+// loadSession();
 
 let store; 
 let reconnectAttempts = 0;
@@ -405,15 +405,38 @@ let isAdmin = false;
 let isSuperAdmin = false;
 
 if (groupInfo && groupInfo.participants) {
-    participants = groupInfo.participants.map(p => p.pn || p.id);
-    groupAdmins = groupInfo.participants.filter(p => p.admin === 'admin').map(p => p.pn || p.id);
-    groupSuperAdmins = groupInfo.participants.filter(p => p.admin === 'superadmin').map(p => p.pn || p.id);
+    // Flexible participant field detection for both Baileys versions
+    participants = groupInfo.participants.map(p => p.phoneNumber || p.pn || p.jid || p.id);
+    
+    // Flexible admin detection for both Baileys versions
+    groupAdmins = groupInfo.participants
+        .filter(p => p.admin === 'admin')
+        .map(p => p.phoneNumber || p.pn || p.jid || p.id);
+    
+    groupSuperAdmins = groupInfo.participants
+        .filter(p => p.admin === 'superadmin')
+        .map(p => p.phoneNumber || p.pn || p.jid || p.id);
+    
     const senderLid = standardizeJid(sendr);
-    const founds = groupInfo.participants.find(p => p.id === senderLid || p.pn === senderLid);
-    sender = founds?.pn || founds?.id || sendr;
-    isBotAdmin = groupAdmins.includes(standardizeJid(botId)) || groupSuperAdmins.includes(standardizeJid(botId));
-    isAdmin = groupAdmins.includes(sender);
-    isSuperAdmin = groupSuperAdmins.includes(sender);
+    
+    // Flexible participant lookup for both Baileys versions
+    const founds = groupInfo.participants.find(p => 
+        p.id === senderLid || 
+        p.pn === senderLid || 
+        p.jid === senderLid || 
+        p.phoneNumber === senderLid
+    );
+    
+    sender = founds?.phoneNumber || founds?.pn || founds?.jid || founds?.id || sendr;
+    
+    // Check bot admin status
+    const botStandardized = standardizeJid(botId);
+    isBotAdmin = groupAdmins.includes(botStandardized) || groupSuperAdmins.includes(botStandardized);
+    
+    // Check sender admin status
+    const senderStandardized = standardizeJid(sender);
+    isAdmin = groupAdmins.includes(senderStandardized);
+    isSuperAdmin = groupSuperAdmins.includes(senderStandardized);
 }
 
             const repliedMessage = ms.message?.extendedTextMessage?.contextInfo?.quotedMessage || null;
@@ -593,13 +616,13 @@ const isSuperUser = finalSuperUsers.includes(sender);
                         Gifted.getJidFromLid = async (lid) => {
     const groupMetadata = await Gifted.groupMetadata(from);
     const match = groupMetadata.participants.find(p => p.lid === lid || p.id === lid);
-    return match?.pn || null;
+    return match?.phoneNumber || match?.pn || match?.jid || null;
 };
 
 Gifted.getLidFromJid = async (jid) => {
     const groupMetadata = await Gifted.groupMetadata(from);
-    const match = groupMetadata.participants.find(p => p.jid === jid || p.id === jid);
-    return match?.lid || null;
+    const match = groupMetadata.participants.find(p => p.jid === jid || p.phoneNumber === jid || p.id === jid || p.pn === jid);
+    return match?.lid || match?.id || null;
 };
                            
 
@@ -659,6 +682,7 @@ Gifted.getLidFromJid = async (jid) => {
                             isCmd: isCommand,
                             command,
                             isAdmin,
+                            isSuperAdmin,
                             isBotAdmin,
                             sender,
                             pushName,
