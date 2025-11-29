@@ -143,7 +143,7 @@ gmd({
 
       const firstVideo = searchResponse.videos[0];
       const videoUrl = firstVideo.url;
- 
+
       const audioApi = `${GiftedTechApi}/api/download/ytmp3?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
 
       const response = await gmdBuffer(audioApi);
@@ -269,7 +269,6 @@ gmd({
       const firstVideo = searchResponse.videos[0];
       const videoUrl = firstVideo.url;
 
-      // Do not rely on this as I might disable it/change port anytime 
       const audioApi = `${GiftedTechApi}/api/download/ytmp3?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
 
       const response = await gmdBuffer(audioApi);
@@ -408,7 +407,7 @@ gmd({
       const firstVideo = searchResponse.videos[0];
       const videoUrl = firstVideo.url;
 
-      const videoApi = `${GiftedTechApi}/api/download/ytmp4?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
+        const audioApi = `${GiftedTechApi}/api/download/ytmp4?stream=true&apikey=${GiftedApiKey}&url=${encodeURIComponent(videoUrl)}`;
 
       const response = await gmdBuffer(videoApi);
 
@@ -506,4 +505,3 @@ gmd({
     }
   }
 );
-
