@@ -15,11 +15,13 @@ const {
 } = require("gifted-baileys");
 
 const { 
+    evt, 
+    logger,
     emojis,
     gmdStore,
     commands,
-    evt,logger,
-    setSudo,delSudo,
+    setSudo,
+    delSudo,
     GiftedTechApi,
     GiftedApiKey,
     GiftedAutoReact,
@@ -35,8 +37,8 @@ const {
     uploadToImgBB,
     setCommitHash, 
     getCommitHash,
-    gmdBuffer,gmdJson, 
-    formatAudio,formatVideo,
+    gmdBuffer, gmdJson, 
+    formatAudio, formatVideo,
     uploadToGithubCdn,
     uploadToGiftedCdn,
     uploadToPasteboard,
@@ -402,38 +404,18 @@ let isBotAdmin = false;
 let isAdmin = false;
 let isSuperAdmin = false;
 
-// START OF FLEXIBLE GROUP METADATA BOTH BAILEYS AND GIFTED-BAILEYS VERSIONS //////////////////////////////////////////////
 if (groupInfo && groupInfo.participants) {
-    participants = groupInfo.participants.map(p => p.phoneNumber || p.pn || p.jid || p.id);
-    
-    groupAdmins = groupInfo.participants
-        .filter(p => p.admin === 'admin')
-        .map(p => p.phoneNumber || p.pn || p.jid || p.id);
-    
-    groupSuperAdmins = groupInfo.participants
-        .filter(p => p.admin === 'superadmin')
-        .map(p => p.phoneNumber || p.pn || p.jid || p.id);
-    
+    participants = groupInfo.participants.map(p => p.pn || p.id);
+    groupAdmins = groupInfo.participants.filter(p => p.admin === 'admin').map(p => p.pn || p.id);
+    groupSuperAdmins = groupInfo.participants.filter(p => p.admin === 'superadmin').map(p => p.pn || p.id);
     const senderLid = standardizeJid(sendr);
-    
-    const founds = groupInfo.participants.find(p => 
-        p.id === senderLid || 
-        p.pn === senderLid || 
-        p.jid === senderLid || 
-        p.phoneNumber === senderLid
-    );
-    
-    sender = founds?.phoneNumber || founds?.pn || founds?.jid || founds?.id || sendr;
-    
-    const botStandardized = standardizeJid(botId);
-    isBotAdmin = groupAdmins.includes(botStandardized) || groupSuperAdmins.includes(botStandardized);
-    
-    const senderStandardized = standardizeJid(sender);
-    isAdmin = groupAdmins.includes(senderStandardized);
-    isSuperAdmin = groupSuperAdmins.includes(senderStandardized);
+    const founds = groupInfo.participants.find(p => p.id === senderLid || p.pn === senderLid);
+    sender = founds?.pn || founds?.id || sendr;
+    isBotAdmin = groupAdmins.includes(standardizeJid(botId)) || groupSuperAdmins.includes(standardizeJid(botId));
+    isAdmin = groupAdmins.includes(sender);
+    isSuperAdmin = groupSuperAdmins.includes(sender);
 }
-// END OF FLEXIBLE GROUP METADATA BOTH BAILEYS AND GIFTED-BAILEYS VERSIONS //////////////////////////////////////////////
-            
+
             const repliedMessage = ms.message?.extendedTextMessage?.contextInfo?.quotedMessage || null;
             const type = getContentType(ms.message);
             const pushName = ms.pushName || 'Gifted-Md User';
@@ -611,13 +593,13 @@ const isSuperUser = finalSuperUsers.includes(sender);
                         Gifted.getJidFromLid = async (lid) => {
     const groupMetadata = await Gifted.groupMetadata(from);
     const match = groupMetadata.participants.find(p => p.lid === lid || p.id === lid);
-    return match?.phoneNumber || match?.pn || match?.jid || null;
+    return match?.pn || null;
 };
 
 Gifted.getLidFromJid = async (jid) => {
     const groupMetadata = await Gifted.groupMetadata(from);
-    const match = groupMetadata.participants.find(p => p.jid === jid || p.phoneNumber === jid || p.id === jid || p.pn === jid);
-    return match?.lid || match?.id || null;
+    const match = groupMetadata.participants.find(p => p.jid === jid || p.id === jid);
+    return match?.lid || null;
 };
                            
 
@@ -677,7 +659,6 @@ Gifted.getLidFromJid = async (jid) => {
                             isCmd: isCommand,
                             command,
                             isAdmin,
-                            isSuperAdmin,
                             isBotAdmin,
                             sender,
                             pushName,
