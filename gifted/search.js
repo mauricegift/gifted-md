@@ -33,7 +33,7 @@ gmd({
     const videos = results.slice(0, 5);
     const cards = await Promise.all(videos.map(async (vid, i) => ({
       header: {
-        title: `🎬 *${vid.name}*`,
+        title: `🎬 ${vid.name}`,
         hasMediaAttachment: true,
         imageMessage: (await generateWAMessageContent({ image: { url: vid.thumbnail } }, {
           upload: Gifted.waUploadToServer
