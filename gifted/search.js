@@ -33,7 +33,7 @@ gmd({
     const videos = results.slice(0, 5);
     const cards = await Promise.all(videos.map(async (vid, i) => ({
       header: {
-        title: `🎬 ${vid.name}`,
+        title: `🎬 *${vid.name}*`,
         hasMediaAttachment: true,
         imageMessage: (await generateWAMessageContent({ image: { url: vid.thumbnail } }, {
           upload: Gifted.waUploadToServer
@@ -42,7 +42,7 @@ gmd({
       body: {
         text: `📺 Duration: ${vid.duration}\n👁️ Views: ${vid.views}${vid.published ? `\n📅 Published: ${vid.published}` : ""}`
       },
-      footer: { text: "Scroll to see more videos" },
+      footer: `> *${botFooter}*`,
       nativeFlowMessage: {
         buttons: [
            {
@@ -72,7 +72,7 @@ gmd({
           },
           interactiveMessage: {
             body: { text: `🔍 YouTube Results for: *${q}*` },
-            footer: { text: `📂 Found *${videos.length}* videos` },
+            footer: { text: `📂 Displaying first *${videos.length}* videos` },
             carouselMessage: { cards }
           }
         }
