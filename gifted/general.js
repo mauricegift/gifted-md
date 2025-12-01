@@ -14,6 +14,7 @@ const { sendButtons } = require('gifted-btns');
 
 gmd({ 
   pattern: "ping",
+  aliases: ['pi'],
   react: "⚡",
   category: "general",
   description: "Check bot response speed",
@@ -257,6 +258,7 @@ gmd({
 
 gmd({ 
   pattern: "uptime", 
+  aliases: ['up'],
   react: "⏳",
   category: "general",
   description: "check bot uptime status.",
