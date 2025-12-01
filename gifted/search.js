@@ -42,7 +42,7 @@ gmd({
       body: {
         text: `📺 Duration: ${vid.duration}\n👁️ Views: ${vid.views}${vid.published ? `\n📅 Published: ${vid.published}` : ""}`
       },
-      footer: `> *${botFooter}*`,
+      footer: `*${botFooter}*`,
       nativeFlowMessage: {
         buttons: [
            {
