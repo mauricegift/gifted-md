@@ -14,7 +14,7 @@ module.exports = {
     CAPTION : process.env.CAPTION || '©𝟐𝟎𝟐𝟒 𝐆𝐈𝐅𝐓𝐄𝐃 𝐌𝐃 𝐕𝟓',
     VERSION: process.env.VERSION || '5.0.0',
     BOT_PIC : process.env.BOT_PIC || 'https://gitcdn.giftedtech.co.ke/image/AZO_image.jpg',            
-    MODE: process.env.MODE || "private",
+    MODE: process.env.MODE || "public",
     PM_PERMIT: process.env.PM_PERMIT || 'false',
     WARN_COUNT : process.env.WARN_COUNT || '3' ,
     TIME_ZONE: process.env.TIME_ZONE || "Africa/Nairobi",
