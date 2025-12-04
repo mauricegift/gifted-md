@@ -356,10 +356,11 @@ Gifted.ev.on("messages.upsert", async ({ messages }) => {
             console.error("❌ Error reading Taskflow folder:", error.message);
         }
 
-        console.log("✅ Plugin Files Loaded");
+        // console.log("✅ Plugin Files Loaded"); /////////////////////////////////////////////////////////////////////
 
         Gifted.ev.on("messages.upsert", async ({ messages }) => {
             const ms = messages[0];
+            // console.log(ms) /////////////////////////////////////////////////////////
             if (!ms?.message || !ms?.key) return;
 
             function standardizeJid(jid) {
@@ -387,7 +388,7 @@ Gifted.ev.on("messages.upsert", async ({ messages }) => {
             let groupName = '';
             try {
             groupInfo = isGroup ? await Gifted.groupMetadata(from).catch(() => null) : null;
-               // console.log(groupInfo) //////////////////////////////////////////////////////
+             //  console.log(groupInfo) //////////////////////////////////////////////////////
 groupName = groupInfo?.subject || '';
 } catch (err) {
     console.error("Group metadata error:", err);
@@ -395,7 +396,7 @@ groupName = groupInfo?.subject || '';
 
 const sendr = ms.key.fromMe 
                 ? (Gifted.user.id.split(':')[0] + '@s.whatsapp.net' || Gifted.user.id) 
-                : (ms.key.participant || ms.key.remoteJid);
+                : (ms.key.participantPn || ms.key.senderPn || ms.key.participant || ms.key.remoteJid);
 let participants = [];
 let groupAdmins = [];
 let groupSuperAdmins = [];
@@ -405,12 +406,12 @@ let isAdmin = false;
 let isSuperAdmin = false;
 
 if (groupInfo && groupInfo.participants) {
-    participants = groupInfo.participants.map(p => p.pn || p.id);
-    groupAdmins = groupInfo.participants.filter(p => p.admin === 'admin').map(p => p.pn || p.id);
-    groupSuperAdmins = groupInfo.participants.filter(p => p.admin === 'superadmin').map(p => p.pn || p.id);
+    participants = groupInfo.participants.map(p => p.pn || p.poneNumber || p.id);
+    groupAdmins = groupInfo.participants.filter(p => p.admin === 'admin').map(p => p.pn || p.poneNumber || p.id);
+    groupSuperAdmins = groupInfo.participants.filter(p => p.admin === 'superadmin').map(p => p.pn || p.poneNumber || p.id);
     const senderLid = standardizeJid(sendr);
-    const founds = groupInfo.participants.find(p => p.id === senderLid || p.pn === senderLid);
-    sender = founds?.pn || founds?.id || sendr;
+    const founds = groupInfo.participants.find(p => p.id === senderLid || p.pn === senderLid || p.phoneNumber === senderLid);
+    sender = founds?.pn || founds?.phoneNumber || founds?.id || sendr;
     isBotAdmin = groupAdmins.includes(standardizeJid(botId)) || groupSuperAdmins.includes(standardizeJid(botId));
     isAdmin = groupAdmins.includes(sender);
     isSuperAdmin = groupSuperAdmins.includes(sender);
