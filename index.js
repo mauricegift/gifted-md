@@ -220,7 +220,7 @@ Gifted.ev.on("messages.upsert", async ({ messages }) => {
         if (key.fromMe) return;
         if (key.remoteJid === 'status@broadcast') return;
 
-        const sender = key.senderPn || key.participantPn || key.participant || key.remoteJid;
+        const sender = key.remoteJid || key.senderPn || key.participantPn || key.participant;
         const senderPushName = key.pushName || ms.pushName;
 
         if (sender === botJid || sender === botOwnerJid || key.fromMe) return;
